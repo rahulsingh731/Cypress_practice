@@ -1,5 +1,6 @@
 {
   "username": "rahulshettyacademy",
   "password": "learning",
-  "productName": ["Nokia Edge","Blackberry"]
+  "productName": ["Nokia Edge","Blackberry"],
+  "country": "India"
 }

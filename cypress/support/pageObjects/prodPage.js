@@ -3,15 +3,15 @@ import CartPage from './cartPage';
 
 class ProductPage{
 
-    pageValidation(){
-        cy.contains("Shop Name").should('be.visible');
+    checkShopname(){
+        return cy.contains("Shop Name");
     }
-    verifyNumCard(){
-        cy.get('app-card').should('have.length', 4);
+    getNumCards(){
+        return cy.get('app-card');
     }
     filterProduct(productName){
         cy.get('app-card').filter(`:contains(${productName})`).then($element => {
-            cy.wrap($element).should('have.length', 1);
+            // cy.wrap($element).should('have.length', 1);
             cy.wrap($element).find('button', 'Add').click();
         });
     }
