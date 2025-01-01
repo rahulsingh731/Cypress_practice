@@ -1,21 +1,28 @@
-///reference types="cypress" />
+/// <reference types="cypress" />
 
 describe('End to End Ecommerce Test', () => {
-    it('Buy Products', () => {
+    before(function(){
+        //run once before all the tests in the block
+        cy.fixture('example').then(function (data) {
+            this.data = data;
+        });
+    })
 
-        const list_items = ['Blackberry', 'Nokia Edge'];
+
+    it('Buy Products', function() {
+        
         cy.visit("https://rahulshettyacademy.com/loginpagePractise/#/")
-        cy.get('input[name="username"]').type('rahulshettyacademy');
-        cy.get('input[name="password"]').type('learning');
+        cy.get('input[name="username"]').type(this.data.username);
+        cy.get('input[name="password"]').type(this.data.password);
         cy.get('#terms').check({ force: true });
         cy.contains("Sign In").click();
         cy.contains("Shop Name").should('be.visible');
         cy.get('app-card').should('have.length', 4);
-        cy.get('app-card').filter(`:contains(${list_items[0]})`).then($element => {
+        cy.get('app-card').filter(`:contains(${this.data.productName[0]})`).then($element => {
             cy.wrap($element).should('have.length', 1);
             cy.wrap($element).find('button', 'Add').click();
         });
-        cy.get('app-card').filter(`:contains(${list_items[1]})`).then($element => {
+        cy.get('app-card').filter(`:contains(${this.data.productName[0]})`).then($element => {
             cy.wrap($element).should('have.length', 1);
             cy.wrap($element).find('button', 'Add').click();
         });
@@ -32,7 +39,7 @@ describe('End to End Ecommerce Test', () => {
         });
         cy.get('button').contains('Checkout').click();
         cy.get('#country').type('India');
-        // cy.wait(2000);
+        
         cy.get('.suggestions ul li a:nth-child(1)',{timeout:10000}).click();
         cy.contains('Purchase').click();
         cy.get('div.alert-success').should('contain', 'Success');
